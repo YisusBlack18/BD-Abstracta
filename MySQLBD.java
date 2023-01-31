@@ -12,6 +12,8 @@ public class MySQLBD extends BD {
 
     public void main(String[] args) {
         Connection conex = conectBD();
+        String query = "USE Veterinaria";
+        ejecutaQuery(conex, query);
         
     }
 
