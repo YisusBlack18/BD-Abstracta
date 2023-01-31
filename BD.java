@@ -1,14 +1,13 @@
 import java.sql.Connection;
-import java.sql.DriverManager;
 
 /**
  * BD
  */
 public abstract class BD {
-    private String driver = "com.mysql.jdbc.Driver";
-    private String url = "jdbc:mysql://localhost:3306/";
-    private String user = "root";
-    private String pass = "";
+    protected String driver;
+    protected String url;
+    protected String user;
+    protected String pass;
 
     public BD(String driver, String url, String user, String pass) {
         this.driver = driver;
@@ -18,23 +17,11 @@ public abstract class BD {
     };
 
 
-    public Connection conectBD() {
-        Connection conex = null;
-        
-        try {
-            Class.forName(driver);
-            conex = DriverManager.getConnection(url, user, pass);
-            
-        } catch (Exception e) {
-            System.out.println("Error al conectar con la base de datos.\n"
-                    + e.getMessage().toString());
-        }
-        return conex;
-    };
+    public abstract Connection conectBD();
 
-    public abstract void ejecutaQuery();
+    public abstract void ejecutaQuery(Connection conex, String query);
 
-    public abstract void closeConect();
+    public abstract void closeConect(Connection conex);
 
     
 }

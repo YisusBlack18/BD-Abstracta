@@ -1,33 +1,54 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-public class MySQLBD extends BD{
+public class MySQLBD extends BD {
     
 
+    public MySQLBD(String driver, String url, String user, String pass) {
+        super(driver, url, user, pass);
+    }
 
-
-    public static void main(String[] args) {
+    public void main(String[] args) {
         Connection conex = conectBD();
         
     }
-    
 
     @Override
     public Connection conectBD() {
-        // TODO Auto-generated method stub
+        Connection conex = null;
         
+        try {
+            Class.forName(driver);
+            conex = DriverManager.getConnection(url, user, pass);
+            
+        } catch (Exception e) {
+            System.out.println("Error al conectar con la base de datos.\n"
+                    + e.getMessage().toString());
+        }
+        return conex;
     }
-    
+
     @Override
-    public void ejecutaQuery() {
-        // TODO Auto-generated method stub
-        
+    public void ejecutaQuery(Connection conex, String query) {
+        Statement sentencias = null;
+        try {
+            sentencias = conex.createStatement();
+            sentencias.executeUpdate(query);
+            sentencias.close();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
-    public void closeConect() {
-        // TODO Auto-generated method stub
-        
+    public void closeConect(Connection conex) {
+        try {
+            conex.close();
+        } catch(SQLException e) {
+            System.out.println(e.getMessage().toString());
+        }
     }
-
 }
+
