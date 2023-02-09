@@ -1,6 +1,7 @@
 package src;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -13,19 +14,16 @@ public class PostgreSQL extends BD {
 
     public void main(String[] args) {
         Connection conex = conectBD();
-        String query = "USE Veterinaria";
-        ejecutaQuery(conex, query);
+        String query = "SELECT * FROM prueba1";
+        ejecutaConsulta(conex, query);
         
     }
 
     @Override
     public Connection conectBD() {
         Connection conex = null;
-        
         try {
-            Class.forName(driver);
             conex = DriverManager.getConnection(url, user, pass);
-            
         } catch (Exception e) {
             System.out.println("Error al conectar con la base de datos.\n"
                     + e.getMessage().toString());
@@ -34,7 +32,7 @@ public class PostgreSQL extends BD {
     }
 
     @Override
-    public void ejecutaQuery(Connection conex, String query) {
+    public void ejecutaUpdate(Connection conex, String query) {
         Statement sentencias = null;
         try {
             sentencias = conex.createStatement();
@@ -55,8 +53,18 @@ public class PostgreSQL extends BD {
     }
 
     @Override
-    public void cargaDriver() {
-        // TODO Auto-generated method stub
+    public void ejecutaConsulta(Connection conex, String query) {
+        Statement s;
+        try {
+            s = conex.createStatement();
+            ResultSet rs = s.executeQuery (query);
+            while (rs.next()) {
+                System.out.println (rs.getInt (1) + " " + rs.getString (2));
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } 
         
     }
 }

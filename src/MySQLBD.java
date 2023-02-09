@@ -1,6 +1,7 @@
 package src;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -9,23 +10,20 @@ public class MySQLBD extends BD {
 
     public MySQLBD(String url, String user, String pass) {
         super(url, user, pass);
-        cargaDriver();
     }
 
     public void main(String[] args) {
         Connection conex = conectBD();
-        String query = "USE prueba";
-        ejecutaQuery(conex, query);
+        String query = "SELECT * FROM prueba1";
+        ejecutaConsulta(conex, query);
         
     }
 
     @Override
     public Connection conectBD() {
         Connection conex = null;
-        
         try {
             conex = DriverManager.getConnection(url, user, pass);
-            
         } catch (Exception e) {
             System.out.println("Error al conectar con la base de datos.\n"
                     + e.getMessage().toString());
@@ -34,7 +32,7 @@ public class MySQLBD extends BD {
     }
 
     @Override
-    public void ejecutaQuery(Connection conex, String query) {
+    public void ejecutaUpdate(Connection conex, String query) {
         Statement sentencias = null;
         try {
             sentencias = conex.createStatement();
@@ -55,14 +53,18 @@ public class MySQLBD extends BD {
     }
 
     @Override
-    public void cargaDriver() {
+    public void ejecutaConsulta(Connection conex, String query) {
+        Statement s;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            
-        } catch (Exception e) {
-            System.out.println("Error al cargar driver.\n"
-                    + e.getMessage().toString());
-        }
+            s = conex.createStatement();
+            ResultSet rs = s.executeQuery (query);
+            System.out.println();
+            while (rs.next()) {
+                System.out.println (rs.getInt (1) + " \t" + rs.getString (2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } 
         
     }
 }
