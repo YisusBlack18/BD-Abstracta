@@ -10,14 +10,14 @@ public abstract class BD {
     protected String user;
     protected String pass;
 
-    public BD(String driver, String url, String user, String pass) {
-        this.driver = driver;
+    public BD(String url, String user, String pass) {
         this.url = url;
         this.user = user;
         this.pass = pass;
     };
 
-
+    public abstract void cargaDriver();
+    
     public abstract Connection conectBD();
 
     public abstract void ejecutaQuery(Connection conex, String query);

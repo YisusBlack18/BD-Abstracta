@@ -7,8 +7,8 @@ import java.sql.Statement;
 public class PostgreSQL extends BD {
     
 
-    public PostgreSQL(String driver, String url, String user, String pass) {
-        super(driver, url, user, pass);
+    public PostgreSQL(String url, String user, String pass) {
+        super(url, user, pass);
     }
 
     public void main(String[] args) {
@@ -52,5 +52,11 @@ public class PostgreSQL extends BD {
         } catch(SQLException e) {
             System.out.println(e.getMessage().toString());
         }
+    }
+
+    @Override
+    public void cargaDriver() {
+        // TODO Auto-generated method stub
+        
     }
 }

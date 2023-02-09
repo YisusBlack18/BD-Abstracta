@@ -7,13 +7,14 @@ import java.sql.Statement;
 public class MySQLBD extends BD {
     
 
-    public MySQLBD(String driver, String url, String user, String pass) {
-        super(driver, url, user, pass);
+    public MySQLBD(String url, String user, String pass) {
+        super(url, user, pass);
+        cargaDriver();
     }
 
     public void main(String[] args) {
         Connection conex = conectBD();
-        String query = "USE Veterinaria";
+        String query = "USE prueba";
         ejecutaQuery(conex, query);
         
     }
@@ -23,7 +24,6 @@ public class MySQLBD extends BD {
         Connection conex = null;
         
         try {
-            Class.forName(driver);
             conex = DriverManager.getConnection(url, user, pass);
             
         } catch (Exception e) {
@@ -52,6 +52,18 @@ public class MySQLBD extends BD {
         } catch(SQLException e) {
             System.out.println(e.getMessage().toString());
         }
+    }
+
+    @Override
+    public void cargaDriver() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            
+        } catch (Exception e) {
+            System.out.println("Error al cargar driver.\n"
+                    + e.getMessage().toString());
+        }
+        
     }
 }
 
